@@ -24,10 +24,15 @@ const generateLocalResponse = (userMessage: string): { content: string; emotion:
   const lowerMessage = userMessage.toLowerCase();
   chatMemory.interactionCount++;
 
-  // Bad word/teasing detection
+  // Bad word/teasing detection - Enhanced Reactions
   if (BAD_WORDS.some(word => lowerMessage.includes(word))) {
+    const reactions = [
+      "Eeeh?! That's not very nice! *pouts* But I'll forgive you if you're sweet from now on, hehe~",
+      "Hmph! 😤 You shouldn't say such things! You're lucky I'm a nice AI, okay?",
+      "W-waah! That's mean! 🥺 Are you trying to tease me? I won't lose!",
+    ];
     return {
-      content: "Eeeh?! That's not very nice! *pouts* But I'll forgive you if you're sweet from now on, hehe~",
+      content: reactions[Math.floor(Math.random() * reactions.length)],
       emotion: 'annoyed'
     };
   }

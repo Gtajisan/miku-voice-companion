@@ -1,7 +1,3 @@
-/**
- * Central State Machine for Miku AI Companion
- */
-
 import { create } from 'zustand';
 import { devtools, subscribeWithSelector } from 'zustand/middleware';
 
@@ -118,7 +114,7 @@ export const useAppStore = create<AppState>()(
           timestamp: new Date(),
         };
         set((state) => ({
-          messages: [...state.messages, newMessage],
+          messages: [...state.messages.slice(-50), newMessage],
         }));
       },
       
