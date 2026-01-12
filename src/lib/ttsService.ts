@@ -14,13 +14,13 @@ interface TTSConfig {
 const EMOTION_CONFIGS: Record<EmotionType, TTSConfig> = {
   neutral: { rate: 1.0, pitch: 1.1, volume: 1.0 },
   happy: { rate: 1.1, pitch: 1.3, volume: 1.0 },
-  excited: { rate: 1.2, pitch: 1.4, volume: 1.0 },
+  excited: { rate: 1.3, pitch: 1.5, volume: 1.0 },
   curious: { rate: 1.05, pitch: 1.25, volume: 1.0 },
-  shy: { rate: 0.9, pitch: 1.2, volume: 0.85 },
-  sad: { rate: 0.85, pitch: 0.95, volume: 0.8 },
-  funny: { rate: 1.15, pitch: 1.4, volume: 1.0 },
-  annoyed: { rate: 1.2, pitch: 1.1, volume: 1.0 },
-  calm: { rate: 0.95, pitch: 1.05, volume: 0.95 },
+  shy: { rate: 0.85, pitch: 1.2, volume: 0.8 },
+  sad: { rate: 0.8, pitch: 0.9, volume: 0.75 },
+  funny: { rate: 1.25, pitch: 1.45, volume: 1.0 },
+  annoyed: { rate: 1.25, pitch: 1.05, volume: 1.0 },
+  calm: { rate: 0.9, pitch: 1.0, volume: 0.9 },
 };
 
 export class TTSService {

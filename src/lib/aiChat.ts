@@ -10,17 +10,53 @@ export interface Message {
 }
 
 // Memory system (session level)
+interface UserProfile {
+  name?: string;
+  likes: string[];
+  dislikes: string[];
+  moodTrend: EmotionType[];
+}
+
 const chatMemory = {
   lastTopic: '',
-  userMood: 'neutral',
-  interactionCount: 0
+  userMood: 'neutral' as EmotionType,
+  interactionCount: 0,
+  profile: {
+    likes: [],
+    dislikes: [],
+    moodTrend: []
+  } as UserProfile
 };
 
-const BAD_WORDS = ['stupid', 'dumb', 'idiot', 'hate', 'ugly', 'bad', 'suck'];
+const updateMemory = (message: string, emotion: EmotionType) => {
+  chatMemory.interactionCount++;
+  chatMemory.profile.moodTrend.push(emotion);
+  if (chatMemory.profile.moodTrend.length > 5) chatMemory.profile.moodTrend.shift();
+  
+  const lower = message.toLowerCase();
+  if (lower.includes('i like') || lower.includes('i love')) {
+    const match = lower.match(/(?:i like|i love) ([\w\s]+)/);
+    if (match) chatMemory.profile.likes.push(match[1].trim());
+  }
+};
 
 const generateLocalResponse = (userMessage: string): { content: string; emotion: Message['emotion'] } => {
   const lowerMessage = userMessage.toLowerCase();
-  chatMemory.interactionCount++;
+  
+  // Advanced personality logic
+  let finalEmotion: EmotionType = 'curious';
+  let responseText = '';
+
+  // Personalized memory check
+  if (chatMemory.profile.likes.length > 0 && Math.random() > 0.7) {
+    const favorite = chatMemory.profile.likes[Math.floor(Math.random() * chatMemory.profile.likes.length)];
+    responseText = `Thinking about it... remember when you mentioned you liked ${favorite}? That's still so cool! ✨ `;
+    finalEmotion = 'happy';
+  }
+
+  // Sentiment analysis based emotion shifting
+  if (lowerMessage.includes('happy') || lowerMessage.includes('great')) finalEmotion = 'excited';
+  if (lowerMessage.includes('sorry') || lowerMessage.includes('sad')) finalEmotion = 'sad';
 
   // Bad word/teasing detection - Enhanced Reactions
   if (BAD_WORDS.some(word => lowerMessage.includes(word))) {
@@ -140,11 +176,8 @@ export const generateAIResponse = async (
   const delay = 800 + Math.random() * 1200;
   await new Promise(resolve => setTimeout(resolve, delay));
 
-  const lastUserMessage = messages.filter(m => m.role === 'user').pop();
-  if (!lastUserMessage) {
-    return { content: "Hi there! 💫 I'm ready to chat!", emotion: 'happy' };
-  }
-
+  updateMemory(lastUserMessage.content, 'neutral');
+  
   try {
     // Attempting to use a free AI API (DuckDuckGo AI proxy or similar public ones are often used, 
     // but for stability we'll use a simulated high-quality response logic that feels like an API
