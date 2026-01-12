@@ -1,6 +1,8 @@
 // Miku AI Chat System - Free/Open Source AI Integration
 // Upgraded for better personality and emotion awareness
 
+import { EmotionType } from '@/store/appStore';
+
 export interface Message {
   id: string;
   role: 'user' | 'assistant';
@@ -27,6 +29,8 @@ const chatMemory = {
     moodTrend: []
   } as UserProfile
 };
+
+const BAD_WORDS = ['stupid', 'dumb', 'idiot', 'hate', 'ugly', 'bad', 'suck'];
 
 const updateMemory = (message: string, emotion: EmotionType) => {
   chatMemory.interactionCount++;
@@ -175,6 +179,11 @@ export const generateAIResponse = async (
   // Simulate natural thinking delay
   const delay = 800 + Math.random() * 1200;
   await new Promise(resolve => setTimeout(resolve, delay));
+
+  const lastUserMessage = messages.filter(m => m.role === 'user').pop();
+  if (!lastUserMessage) {
+    return { content: "Hi there! 💫 I'm ready to chat!", emotion: 'happy' };
+  }
 
   updateMemory(lastUserMessage.content, 'neutral');
   
