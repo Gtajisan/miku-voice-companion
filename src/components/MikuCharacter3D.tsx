@@ -104,7 +104,13 @@ const AnimeCharacter: React.FC<{ isSpeaking: boolean; emotion: string; audioLeve
       {/* Improved Character Geometry with smoothing */}
       <mesh position={[0, -0.8, 0]}>
         <capsuleGeometry args={[0.3, 0.8, 16, 32]} />
-        <meshStandardMaterial color={colors.outfit} metalness={0.5} roughness={0.4} />
+        <meshStandardMaterial 
+          color={colors.outfit} 
+          metalness={0.8} 
+          roughness={0.2} 
+          emissive={colors.outfit}
+          emissiveIntensity={0.2}
+        />
       </mesh>
       
       <mesh position={[0, -0.2, 0]}>
@@ -114,7 +120,11 @@ const AnimeCharacter: React.FC<{ isSpeaking: boolean; emotion: string; audioLeve
 
       <mesh ref={headRef} position={[0, 0.2, 0]}>
         <sphereGeometry args={[0.4, 64, 64]} />
-        <meshStandardMaterial color={getEmotionColor()} roughness={0.7} />
+        <meshStandardMaterial 
+          color={getEmotionColor()} 
+          roughness={0.3}
+          metalness={0.1}
+        />
       </mesh>
 
       <group position={[0, 0.25, 0.35]}>
@@ -148,7 +158,13 @@ const AnimeCharacter: React.FC<{ isSpeaking: boolean; emotion: string; audioLeve
 
       <mesh position={[0, 0.45, -0.05]}>
         <sphereGeometry args={[0.48, 64, 64]} />
-        <meshStandardMaterial color={colors.hair} metalness={0.3} roughness={0.4} />
+        <meshStandardMaterial 
+          color={colors.hair} 
+          metalness={0.6} 
+          roughness={0.2}
+          emissive={colors.hair}
+          emissiveIntensity={0.2}
+        />
       </mesh>
 
       <mesh ref={(el) => { if (el) hairRefs.current[0] = el; }} position={[-0.45, 0.1, -0.15]} rotation={[0.1, 0, -0.4]}>
