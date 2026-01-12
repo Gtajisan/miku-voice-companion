@@ -101,23 +101,65 @@ const AnimeCharacter: React.FC<{ isSpeaking: boolean; emotion: string; audioLeve
 
   return (
     <group ref={groupRef}>
-      <mesh position={[0, -0.8, 0]}><capsuleGeometry args={[0.3, 0.8, 8, 16]} /><meshStandardMaterial color={colors.outfit} metalness={0.5} roughness={0.4} /></mesh>
-      <mesh position={[0, -0.2, 0]}><cylinderGeometry args={[0.08, 0.1, 0.15, 16]} /><meshStandardMaterial color={getEmotionColor()} roughness={0.7} /></mesh>
-      <mesh ref={headRef} position={[0, 0.2, 0]}><sphereGeometry args={[0.4, 32, 32]} /><meshStandardMaterial color={getEmotionColor()} roughness={0.7} /></mesh>
+      {/* Improved Character Geometry with smoothing */}
+      <mesh position={[0, -0.8, 0]}>
+        <capsuleGeometry args={[0.3, 0.8, 16, 32]} />
+        <meshStandardMaterial color={colors.outfit} metalness={0.5} roughness={0.4} />
+      </mesh>
+      
+      <mesh position={[0, -0.2, 0]}>
+        <cylinderGeometry args={[0.08, 0.1, 0.15, 32]} />
+        <meshStandardMaterial color={getEmotionColor()} roughness={0.7} />
+      </mesh>
+
+      <mesh ref={headRef} position={[0, 0.2, 0]}>
+        <sphereGeometry args={[0.4, 64, 64]} />
+        <meshStandardMaterial color={getEmotionColor()} roughness={0.7} />
+      </mesh>
+
       <group position={[0, 0.25, 0.35]}>
-        <mesh ref={eyeLeftRef} position={[-0.12, 0, 0]}><sphereGeometry args={[0.08, 16, 16]} /><meshStandardMaterial color={colors.eyes} emissive={colors.eyes} emissiveIntensity={0.6} /></mesh>
-        <mesh ref={eyeRightRef} position={[0.12, 0, 0]}><sphereGeometry args={[0.08, 16, 16]} /><meshStandardMaterial color={colors.eyes} emissive={colors.eyes} emissiveIntensity={0.6} /></mesh>
+        <mesh ref={eyeLeftRef} position={[-0.12, 0, 0]}>
+          <sphereGeometry args={[0.08, 32, 32]} />
+          <meshStandardMaterial color={colors.eyes} emissive={colors.eyes} emissiveIntensity={0.6} />
+        </mesh>
+        <mesh ref={eyeRightRef} position={[0.12, 0, 0]}>
+          <sphereGeometry args={[0.08, 32, 32]} />
+          <meshStandardMaterial color={colors.eyes} emissive={colors.eyes} emissiveIntensity={0.6} />
+        </mesh>
       </group>
-      <mesh ref={mouthRef} position={[0, 0.05, 0.38]}><sphereGeometry args={[0.05, 16, 8]} /><meshStandardMaterial color={colors.mouth} /></mesh>
+
+      <mesh ref={mouthRef} position={[0, 0.05, 0.38]}>
+        <sphereGeometry args={[0.05, 32, 16]} />
+        <meshStandardMaterial color={colors.mouth} />
+      </mesh>
+
       {(emotion === 'shy' || emotion === 'happy' || emotion === 'excited') && (
         <group position={[0, 0.12, 0.35]}>
-          <mesh position={[-0.22, 0, 0]}><sphereGeometry args={[0.07, 8, 8]} /><meshStandardMaterial color="#ff99cc" transparent opacity={0.7} /></mesh>
-          <mesh position={[0.22, 0, 0]}><sphereGeometry args={[0.07, 8, 8]} /><meshStandardMaterial color="#ff99cc" transparent opacity={0.7} /></mesh>
+          <mesh position={[-0.22, 0, 0]}>
+            <sphereGeometry args={[0.07, 16, 16]} />
+            <meshStandardMaterial color="#ff99cc" transparent opacity={0.7} />
+          </mesh>
+          <mesh position={[0.22, 0, 0]}>
+            <sphereGeometry args={[0.07, 16, 16]} />
+            <meshStandardMaterial color="#ff99cc" transparent opacity={0.7} />
+          </mesh>
         </group>
       )}
-      <mesh position={[0, 0.45, -0.05]}><sphereGeometry args={[0.48, 32, 32]} /><meshStandardMaterial color={colors.hair} metalness={0.3} roughness={0.4} /></mesh>
-      <mesh ref={(el) => { if (el) hairRefs.current[0] = el; }} position={[-0.45, 0.1, -0.15]} rotation={[0.1, 0, -0.4]}><capsuleGeometry args={[0.12, 1.4, 8, 16]} /><meshStandardMaterial color={colors.hair} /></mesh>
-      <mesh ref={(el) => { if (el) hairRefs.current[1] = el; }} position={[0.45, 0.1, -0.15]} rotation={[0.1, 0, 0.4]}><capsuleGeometry args={[0.12, 1.4, 8, 16]} /><meshStandardMaterial color={colors.hair} /></mesh>
+
+      <mesh position={[0, 0.45, -0.05]}>
+        <sphereGeometry args={[0.48, 64, 64]} />
+        <meshStandardMaterial color={colors.hair} metalness={0.3} roughness={0.4} />
+      </mesh>
+
+      <mesh ref={(el) => { if (el) hairRefs.current[0] = el; }} position={[-0.45, 0.1, -0.15]} rotation={[0.1, 0, -0.4]}>
+        <capsuleGeometry args={[0.12, 1.4, 16, 32]} />
+        <meshStandardMaterial color={colors.hair} />
+      </mesh>
+
+      <mesh ref={(el) => { if (el) hairRefs.current[1] = el; }} position={[0.45, 0.1, -0.15]} rotation={[0.1, 0, 0.4]}>
+        <capsuleGeometry args={[0.12, 1.4, 16, 32]} />
+        <meshStandardMaterial color={colors.hair} />
+      </mesh>
     </group>
   );
 };

@@ -15,51 +15,19 @@
     
     /* Background System */
     --background: 220 30% 6%;
-    --background-elevated: 220 25% 10%;
     --foreground: 180 100% 98%;
 
-    /* Card System - Glassmorphism */
+    /* Card System */
     --card: 220 30% 12%;
     --card-foreground: 180 100% 98%;
-    --card-glass: 220 30% 15%;
-
-    /* Popover */
-    --popover: 220 30% 10%;
-    --popover-foreground: 180 100% 98%;
 
     /* Primary - Miku Cyan */
     --primary: 174 100% 50%;
     --primary-foreground: 220 30% 6%;
-    --primary-glow: 174 100% 60%;
 
-    /* Secondary - Deep Navy */
-    --secondary: 220 40% 15%;
-    --secondary-foreground: 180 100% 95%;
-
-    /* Muted */
-    --muted: 220 20% 18%;
-    --muted-foreground: 220 15% 60%;
-
-    /* Accent - Hot Pink */
-    --accent: 340 100% 70%;
-    --accent-foreground: 220 30% 6%;
-
-    /* Destructive */
-    --destructive: 0 80% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    /* Borders & Inputs */
+    /* Borders & Radius */
     --border: 220 30% 20%;
-    --input: 220 30% 15%;
-    --ring: 174 100% 50%;
-
-    /* Radius */
     --radius: 1.5rem;
-
-    /* Shadows */
-    --shadow-glow: 0 0 30px -5px hsl(174 100% 50% / 0.5);
-    --shadow-pink-glow: 0 0 30px -5px hsl(340 100% 70% / 0.5);
-    --shadow-card: 0 8px 32px -8px rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -68,15 +36,14 @@
     @apply border-border;
   }
 
-  html {
-    scroll-behavior: smooth;
+  html, body {
+    @apply h-full overflow-hidden;
   }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Quicksand', sans-serif;
     background: radial-gradient(circle at 50% 50%, #0a1118 0%, #050505 100%);
-    min-height: 100vh;
   }
 
   h1, h2, h3, h4, h5, h6 {

@@ -1,5 +1,5 @@
 /**
- * Text-to-Speech Service with Emotion Modulation
+ * Text-to-Speech Service with Emotion Modulation and Multi-language support
  */
 
 import { EmotionType } from '@/store/appStore';
@@ -26,7 +26,7 @@ const EMOTION_CONFIGS: Record<EmotionType, TTSConfig> = {
 export class TTSService {
   private synth: SpeechSynthesis | null = null;
   private selectedVoice: SpeechSynthesisVoice | null = null;
-  private queue: { text: string; emotion: EmotionType }[] = [];
+  private queue: { text: string; emotion: EmotionType; lang?: string }[] = [];
   private isProcessing = false;
   private currentUtterance: SpeechSynthesisUtterance | null = null;
   
@@ -49,11 +49,13 @@ export class TTSService {
     const voices = this.synth.getVoices();
     if (voices.length === 0) return;
 
+    // We try to find the best voice based on the environment
+    // For Miku, we prioritize Japanese female voices if available, or high-quality English female voices
     const priorities = [
-      (v: SpeechSynthesisVoice) => v.lang.includes('ja') && v.name.toLowerCase().includes('female'),
+      (v: SpeechSynthesisVoice) => v.lang.includes('ja') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('miku')),
       (v: SpeechSynthesisVoice) => v.lang.includes('ja'),
+      (v: SpeechSynthesisVoice) => v.lang.includes('en') && v.name.toLowerCase().includes('female') && v.name.toLowerCase().includes('google'),
       (v: SpeechSynthesisVoice) => v.lang.includes('en') && v.name.toLowerCase().includes('female'),
-      (v: SpeechSynthesisVoice) => v.lang.includes('en') && v.name.toLowerCase().includes('google'),
       (v: SpeechSynthesisVoice) => v.lang.includes('en'),
       () => true,
     ];
@@ -80,10 +82,19 @@ export class TTSService {
     this.onBoundaryCallback = callbacks.onBoundary ?? null;
   }
 
+  private detectLanguage(text: string): string {
+    // Basic detection for JA/EN
+    if (/[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\uff66-\uff9f]/.test(text)) {
+      return 'ja-JP';
+    }
+    return 'en-US';
+  }
+
   enqueue(text: string, emotion: EmotionType = 'neutral'): void {
     const cleanedText = cleanTextForTTS(text);
     if (!cleanedText) return;
-    this.queue.push({ text: cleanedText, emotion });
+    const lang = this.detectLanguage(cleanedText);
+    this.queue.push({ text: cleanedText, emotion, lang });
     this.processQueue();
   }
 
@@ -98,17 +109,29 @@ export class TTSService {
     while (this.queue.length > 0) {
       const item = this.queue.shift();
       if (!item) break;
-      await this.speakText(item.text, item.emotion);
+      await this.speakText(item.text, item.emotion, item.lang);
     }
     this.isProcessing = false;
   }
 
-  private speakText(text: string, emotion: EmotionType): Promise<void> {
+  private speakText(text: string, emotion: EmotionType, lang?: string): Promise<void> {
     return new Promise((resolve) => {
       if (!this.synth) { resolve(); return; }
       const utterance = new SpeechSynthesisUtterance(text);
       this.currentUtterance = utterance;
-      if (this.selectedVoice) utterance.voice = this.selectedVoice;
+      
+      if (lang) utterance.lang = lang;
+
+      // Try to find a voice that matches the language of the text
+      if (this.synth) {
+          const voices = this.synth.getVoices();
+          const matchingVoice = voices.find(v => v.lang.startsWith(lang?.split('-')[0] || 'en') && v.name.toLowerCase().includes('female'));
+          if (matchingVoice) {
+              utterance.voice = matchingVoice;
+          } else if (this.selectedVoice) {
+              utterance.voice = this.selectedVoice;
+          }
+      }
 
       const config = EMOTION_CONFIGS[emotion];
       utterance.rate = config.rate;

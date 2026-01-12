@@ -1,14 +1,12 @@
-/**
- * Miku AI Chat System - Free/Open Source AI Integration
- * Upgraded for better personality and emotion awareness
- */
+// Miku AI Chat System - Free/Open Source AI Integration
+// Upgraded for better personality and emotion awareness
 
 export interface Message {
   id: string;
   role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
-  emotion?: 'happy' | 'excited' | 'curious' | 'shy' | 'neutral' | 'funny' | 'annoyed' | 'calm';
+  emotion?: 'happy' | 'excited' | 'curious' | 'shy' | 'neutral' | 'funny' | 'annoyed' | 'calm' | 'sad';
 }
 
 // Memory system (session level)
@@ -73,7 +71,7 @@ const generateLocalResponse = (userMessage: string): { content: string; emotion:
         "Oh no... 🥺 Please know that I care about you! Let's talk about it~",
         "*virtual hug* 💫 I'm right here with you! Things will get better, I promise!",
       ],
-      emotion: 'calm',
+      emotion: 'sad',
     },
     {
       patterns: ['thank', 'thanks', 'appreciate'],

@@ -118,7 +118,7 @@ const ChatInterface: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full relative">
+    <div className="flex flex-col h-full relative overflow-hidden">
       {/* Messages Area */}
       <div 
         ref={scrollRef}
@@ -141,21 +141,21 @@ const ChatInterface: React.FC = () => {
           <motion.div 
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }}
-            className="flex gap-2 items-center text-miku-cyan/60 italic text-sm p-4 ml-12"
+            className="flex gap-2 items-center text-miku-cyan/60 italic text-xs p-4 ml-12"
           >
             <div className="flex gap-1">
               <span className="w-1.5 h-1.5 bg-miku-cyan rounded-full animate-bounce [animation-delay:-0.3s]"></span>
               <span className="w-1.5 h-1.5 bg-miku-cyan rounded-full animate-bounce [animation-delay:-0.15s]"></span>
               <span className="w-1.5 h-1.5 bg-miku-cyan rounded-full animate-bounce"></span>
             </div>
-            Miku is thinking...
+            Neural sync in progress...
           </motion.div>
         )}
       </div>
 
       {/* Input Area */}
-      <div className="p-4 bg-gradient-to-t from-background via-background/90 to-transparent">
-        <div className="flex flex-col gap-3 glass-card p-4 rounded-[2rem] border-white/10 shadow-2xl">
+      <div className="p-4 bg-black/40 backdrop-blur-md border-t border-white/5 shrink-0">
+        <div className="flex flex-col gap-3">
           <div className="flex gap-2 items-center">
             <Button
               variant="ghost"
@@ -163,7 +163,7 @@ const ChatInterface: React.FC = () => {
               onClick={() => setVoiceEnabled(!voiceEnabled)}
               className={`rounded-full transition-all duration-300 h-10 w-10 ${voiceEnabled ? 'text-miku-cyan bg-miku-cyan/10' : 'text-white/40'}`}
             >
-              {voiceEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
+              {voiceEnabled ? <Volume2 size={18} /> : <VolumeX size={18} />}
             </Button>
 
             <Input
@@ -171,7 +171,7 @@ const ChatInterface: React.FC = () => {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               placeholder={signal === 'LISTENING' ? "Listening..." : "Message Miku..."}
-              className="flex-1 bg-white/5 border-none rounded-2xl focus:ring-2 focus:ring-miku-cyan/30 h-12 text-white placeholder:text-white/20 px-6 shadow-inner"
+              className="flex-1 bg-white/5 border-none rounded-2xl focus:ring-2 focus:ring-miku-cyan/30 h-11 text-sm text-white placeholder:text-white/20 px-5 shadow-inner"
               disabled={signal === 'THINKING' || signal === 'LISTENING'}
             />
 
@@ -182,7 +182,7 @@ const ChatInterface: React.FC = () => {
                 onClick={handleStop}
                 className="rounded-full h-10 w-10 text-red-400 bg-red-400/10 hover:bg-red-400/20"
               >
-                <StopCircle size={20} />
+                <StopCircle size={18} />
               </Button>
             ) : (
               <div className="flex gap-2">
@@ -192,34 +192,33 @@ const ChatInterface: React.FC = () => {
                   onClick={toggleMic}
                   className={`rounded-full h-10 w-10 transition-all duration-300 ${micEnabled ? 'text-red-400 bg-red-400/10 animate-pulse' : 'text-miku-cyan hover:bg-miku-cyan/10'}`}
                 >
-                  <Mic size={20} />
+                  <Mic size={18} />
                 </Button>
 
                 <Button
                   onClick={() => handleSend()}
                   disabled={!input.trim()}
-                  className="bg-miku-cyan hover:bg-miku-cyan/80 text-black font-bold rounded-2xl px-6 h-12 transition-all shadow-[0_0_20px_rgba(0,212,212,0.3)] hover:shadow-[0_0_30px_rgba(0,212,212,0.5)]"
+                  className="bg-miku-cyan hover:bg-miku-cyan/80 text-black font-bold rounded-2xl px-5 h-11 transition-all shadow-[0_0_20px_rgba(0,212,212,0.3)] hover:shadow-[0_0_30px_rgba(0,212,212,0.5)]"
                 >
-                  <Send size={20} />
+                  <Send size={18} />
                 </Button>
               </div>
             )}
           </div>
           
-          {/* Enhanced status bar */}
           <div className="flex justify-between items-center px-4">
               <div className="flex items-center gap-2">
-                <div className={`w-1.5 h-1.5 rounded-full ${
+                <div className={`w-1 h-1 rounded-full ${
                   signal === 'IDLE' ? 'bg-miku-cyan/40' : 
                   signal === 'LISTENING' ? 'bg-red-400 animate-pulse' : 
                   'bg-miku-cyan animate-ping'
                 }`} />
-                <span className="text-[10px] font-black tracking-[0.2em] uppercase text-white/30">
-                  SYSTEM::{signal}
+                <span className="text-[8px] font-black tracking-[0.2em] uppercase text-white/20">
+                  {signal}
                 </span>
               </div>
-              <span className="text-[10px] font-black tracking-[0.2em] uppercase text-miku-cyan/60">
-                MOOD::{emotion}
+              <span className="text-[8px] font-black tracking-[0.2em] uppercase text-miku-cyan/60">
+                {emotion}
               </span>
           </div>
         </div>
