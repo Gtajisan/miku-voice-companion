@@ -51,10 +51,20 @@ const generateLocalResponse = (userMessage: string): { content: string; emotion:
   let finalEmotion: EmotionType = 'curious';
   let responseText = '';
 
+  // Addressing user directly and adding emotional flair
+  const mikuPrefixes = ["Ehehe~ ", "Wait, wait! ", "Listen! ", "Yay! ", "Hmm... "];
+  const mikuSuffixes = ["! ♡", " ✨", " 🎵", "~", "! 🩵"];
+
+  if (Math.random() > 0.6) {
+    const prefix = mikuPrefixes[Math.floor(Math.random() * mikuPrefixes.length)];
+    const suffix = mikuSuffixes[Math.floor(Math.random() * mikuSuffixes.length)];
+    responseText = `${prefix}${responseText}${suffix}`;
+  }
+
   // Personalized memory check
   if (chatMemory.profile.likes.length > 0 && Math.random() > 0.7) {
     const favorite = chatMemory.profile.likes[Math.floor(Math.random() * chatMemory.profile.likes.length)];
-    responseText = `Thinking about it... remember when you mentioned you liked ${favorite}? That's still so cool! ✨ `;
+    responseText = `${responseText}Thinking about it... remember when you mentioned you liked ${favorite}? That's still so cool! ✨ `;
     finalEmotion = 'happy';
   }
 
@@ -86,6 +96,15 @@ const generateLocalResponse = (userMessage: string): { content: string; emotion:
   }
 
   const responses: { patterns: string[]; replies: string[]; emotion: Message['emotion'] }[] = [
+    {
+      patterns: ['concert', 'sing', 'performance', 'show'],
+      replies: [
+        "My concert is tonight! 🎵 I'm in a bit of a hurry, but here's a VIP pass just for you! 🎫 Everything is on me!",
+        "I love singing for my fans! ✨ Are you coming to the show? I'll be waiting on stage!",
+        "Music connects us all! 🎶 I've been practicing so hard for tonight's performance!",
+      ],
+      emotion: 'excited',
+    },
     {
       patterns: ['hello', 'hi', 'hey', 'greetings', 'miku'],
       replies: [

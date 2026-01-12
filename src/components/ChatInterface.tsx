@@ -170,8 +170,8 @@ const ChatInterface: React.FC = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-              placeholder={signal === 'LISTENING' ? "Listening..." : "Message Miku..."}
-              className="flex-1 bg-white/5 border-none rounded-2xl focus:ring-2 focus:ring-miku-cyan/30 h-11 text-sm text-white placeholder:text-white/20 px-5 shadow-inner"
+              placeholder={signal === 'LISTENING' ? "Listening..." : "Type your message to Miku..."}
+              className="flex-1 bg-white/5 border border-white/10 rounded-full focus:ring-2 focus:ring-miku-cyan/30 h-12 text-sm text-white placeholder:text-white/20 px-6 shadow-inner"
               disabled={signal === 'THINKING' || signal === 'LISTENING'}
             />
 
